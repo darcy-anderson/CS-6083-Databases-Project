@@ -1,5 +1,15 @@
 
---creat table
+--create tables
+
+CREATE TABLE web_user (
+    user_id     NUMBER(9) GENERATED ALWAYS AS IDENTITY,
+    usrname     VARCHAR2(20) NOT NULL,
+    password    RAW(60) NOT NULL,
+    type        CHAR(1) NOT NULL
+);
+
+ALTER TABLE web_user ADD CONSTRAINT web_user_pk PRIMARY KEY ( user_id );
+ALTER TABLE web_user ADD CONSTRAINT usrname_unique UNIQUE (usrname);
 
 CREATE TABLE author (
     author_id     NUMBER(9) NOT NULL,
@@ -128,7 +138,7 @@ CREATE TABLE organization (
 ALTER TABLE organization ADD CONSTRAINT organization_pk PRIMARY KEY ( sponsor_id );
 
 CREATE TABLE rental_invoice (
-    invoice_id     NUMBER(9) NOT NULL,
+    invoice_id     NUMBER(9) GENERATED ALWAYS AS IDENTITY,
     invoice_date   DATE NOT NULL,
     invoice_status CHAR(1) NOT NULL,
     invoice_amount NUMBER(13, 2)
@@ -398,7 +408,11 @@ END;
 
 --check Constraints DDL Code
 
-
+ALTER TABLE WEB_USER ADD CONSTRAINT user_type
+CHECK (
+    (type = 'C') OR
+    (type = 'E')
+);
 ALTER TABLE CUSTOMER ADD CONSTRAINT id_type
 CHECK (
   (ID_Type = 'P') OR
@@ -454,7 +468,7 @@ BEGIN
     END IF;
   END IF;
 END;
-
+/
 
 
 --insert data
@@ -519,26 +533,26 @@ INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (13,9)
 SELECT * FROM dual;
 
 INSERT ALL
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(1,'R',1)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(2,'B',1)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(3,'B',2)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(4,'R',2)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(5,'B',2)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(6,'B',3)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(7,'R',4)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(8,'R',5)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(9,'B',6)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(10,'L',6)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(11,'R',6)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(12,'B',6)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(13,'R',7)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(14,'L',8)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(15,'R',9)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(16,'L',10)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(17,'B',11)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(18,'R',12)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(19,'R',12)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(20,'R',13)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(1,'A',1)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(2,'N',1)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(3,'A',2)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(4,'N',2)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(5,'N',2)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(6,'N',3)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(7,'A',4)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(8,'N',5)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(9,'N',6)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(10,'N',6)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(11,'A',6)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(12,'N',6)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(13,'A',7)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(14,'N',8)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(15,'A',9)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(16,'N',10)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(17,'N',11)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(18,'A',12)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(19,'A',12)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(20,'A',13)
 SELECT * FROM dual;
 
 
@@ -786,47 +800,45 @@ SELECT * FROM dual;
 
 
 INSERT ALL
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-03',08,1,2)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-04',11,3,10)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-04',01,12,2)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05',08,2,4)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05',01,9,7)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05',04,5,4)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-06',08,13,9)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-06',11,12,3)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-07',08,9,1)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-08',08,4,7)
-INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-09',11,7,5)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-03','08',1,2)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-04','11',3,10)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-04','01',12,2)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05','08',2,4)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05','01',9,7)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-05','04',5,4)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-06','08',13,9)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-06','11',12,3)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-07','08',9,1)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-08','08',4,7)
+INTO ROOM_RESERVATION(Res_Date,Res_Timeslot,Room_Id,Cust_Id) VALUES(DATE'2019-02-09','11',7,5)
 SELECT * FROM dual;
 
 
 
-INSERT ALL
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(1,DATE'2019-02-08','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(2,DATE'2019-02-01','O')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(3,DATE'2019-02-23','O')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(4,DATE'2019-02-22','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(5,DATE'2019-02-09','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(6,DATE'2019-02-10','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(7,DATE'2019-02-11','O')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(8,DATE'2019-02-12','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(9,DATE'2019-02-13','O')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(10,DATE'2019-02-14','C')
-INTO RENTAL_INVOICE(Invoice_Id,Invoice_Date,Invoice_Status) VALUES(11,DATE'2019-02-27','O')
-SELECT * FROM dual;
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-08','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-01','O');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-23','O');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-22','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-09','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-10','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-11','O');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-12','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-13','O');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-14','C');
+INSERT INTO RENTAL_INVOICE(Invoice_Date,Invoice_Status) VALUES(DATE'2019-02-27','O');
 
 
 
 
 INSERT ALL
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(1,'B',DATE'2019-01-09',DATE'2019-02-09',DATE'2019-02-08',1,1,2)
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(2,'B',DATE'2019-01-21',DATE'2019-02-21',DATE'2019-02-01',9,2,10)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(1,'B',DATE'2019-01-09',DATE'2019-02-09',1,2)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(2,'B',DATE'2019-01-21',DATE'2019-02-21',9,10)
 INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(3,'B',DATE'2019-02-27',DATE'2019-03-27',3,6)
 INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(4,'B',DATE'2019-01-20',DATE'2019-03-20',16,9)
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(5,'L',DATE'2019-01-16',DATE'2019-02-16',DATE'2019-02-23',14,3,3)
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(6,'L',DATE'2019-01-02',DATE'2019-02-02',DATE'2019-02-22',11,4,5)
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(7,'L',DATE'2019-01-09',DATE'2019-02-09',DATE'2019-02-14',7,5,6)
-INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(8,'L',DATE'2019-02-09',DATE'2019-03-09',DATE'2019-03-15',5,6,4)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(5,'L',DATE'2019-01-16',DATE'2019-02-16',14,3)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(6,'L',DATE'2019-01-02',DATE'2019-02-02',11,5)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(7,'L',DATE'2019-01-09',DATE'2019-02-09',7,6)
+INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Copy_Id,Cust_id)VALUES(8,'L',DATE'2019-02-09',DATE'2019-03-09',5,4)
 INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(9,'R',DATE'2018-03-09',DATE'2018-04-09',DATE'2019-04-09',3,7,3)
 INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(10,'R',DATE'2018-04-09',DATE'2018-05-09',DATE'2019-05-09',2,8,1)
 INTO BOOK_RENTAL(Rental_Id,Rental_Status,Borrow_Date,Exp_Return_Date,Return_Date,Copy_Id,Invoice_Id,Cust_id)VALUES(11,'R',DATE'2018-05-09',DATE'2018-06-09',DATE'2019-06-09',4,9,9)

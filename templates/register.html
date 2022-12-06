@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block right_navbar %}
+<a href="/login" class="nav-item nav-link">Sign In</a>
+{% endblock %}{% block body %}
+
+<div class="row flex-grow-1">
+  <div class="col-lg-12 my-auto" style="text-align: center; color: #88c5cc">
+    <h1>Account Registration</h1>
+    <form method="POST" action="">
+      <a>Pick a username and password to register.</a><br />
+      {{ form.hidden_tag() }} <br />
+      {{ form.username }} <br /><br />
+      {{ form.password }} <br /><br />
+      <label for="employee">Check here if you are an employee.</label>
+      {{ form.checkbox}} <br /><br />
+      {{ form.submit }} {% with messages = get_flashed_messages() %} {% if
+      messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <a>{{ message }}</a>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

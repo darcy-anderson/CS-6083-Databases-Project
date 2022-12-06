@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="row flex-grow-1">
+  <div class="col-lg-12 my-auto" style="text-align: center; color: #88c5cc">
+    <h1>Sign In</h1>
+    <a>Please enter your username and password to log in.</a>
+    <form method="POST">
+      {{ form.hidden_tag() }}<br />
+      {{ form.username }} <br /><br />
+      {{ form.password }} <br /><br />
+      {{ form.submit }}
+    </form>
+    <br />
+    <a href="{{url_for('register')}}">Don't have an account? Register here!</a>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul class="flashes">
+      {% for message in messages %}
+      <a>{{ message }}</a>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+  </div>
+</div>
+
+{% endblock %}

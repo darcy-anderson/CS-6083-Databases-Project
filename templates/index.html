@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block right_navbar %}
+<a href="/login" class="nav-item nav-link">Sign In</a>
+{% endblock %} {% block body %}
+
+<div class="row flex-grow-1">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8 my-auto" style="color: #88c5cc">
+    <p class="h3 text-center">
+      REAL (Read, Edify, And Learn) is a public library.
+    </p>
+    <br />
+    <p class="h3 text-center">
+      We serve our community by providing access to diversified resources with
+      affordable rental services, free study room reservations, and various
+      educational events.
+    </p>
+    <br />
+    <p class="h3 text-center">
+      Register with us at REAL to get involved in your community today!
+    </p>
+  </div>
+  <div class="col-lg-2"></div>
+</div>
+
+<div class="row splash flex-grow-1 justify-content-center">
+  <img class="rounded-pill" src="/static/images/room.jpg" />
+</div>
+
+{% endblock %}
