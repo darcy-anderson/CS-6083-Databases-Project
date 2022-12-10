@@ -1,13 +1,16 @@
 from flask import Flask, render_template, url_for, redirect, flash
 import oracledb
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_login import login_user, LoginManager, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
+
+from home import home
 
 # Configure flask
 app = Flask(__name__)
+app.register_blueprint(home)
 app.secret_key = '43d23d8ceafbba0828658a49072098379701a5635b9d0b7abe1478f07921c2c2'
 
 # Establish connection to database server
@@ -48,8 +51,11 @@ class User():
   def get_id(self):
     return str(self.id)
 
+  def get_username(self):
+    return self.username
 
-# User loaded for flask_login, called every time new page is visited
+
+# User loader for flask_login, called every time new page is visited
 @login_manager.user_loader
 def load_user(id):
 
@@ -59,6 +65,7 @@ def load_user(id):
   return User(user_data[0], user_data[1], user_data[3])
 
 
+# Form for registration page
 class RegisterForm(FlaskForm):
 
   username = StringField(validators=[InputRequired(),
@@ -67,7 +74,38 @@ class RegisterForm(FlaskForm):
   password = PasswordField(validators=[InputRequired(),
                                        Length(min=4, max=20)],
                            render_kw={"placeholder": "Password"})
-  checkbox = BooleanField("Are you you an employee?")
+  fname = StringField(validators=[InputRequired(),
+                                  Length(min=3, max=30)],
+                      render_kw={"placeholder": "First Name"})
+  mname = StringField(validators=[Length(min=0, max=30)],
+                      render_kw={"placeholder": "Middle Name"})
+  lname = StringField(validators=[InputRequired(),
+                                  Length(min=3, max=30)],
+                      render_kw={"placeholder": "Last Name"})
+  street = StringField(validators=[InputRequired(),
+                                   Length(min=3, max=30)],
+                       render_kw={"placeholder": "Street"})
+  city = StringField(validators=[InputRequired(),
+                                 Length(min=3, max=30)],
+                     render_kw={"placeholder": "City"})
+  state = StringField(validators=[InputRequired(),
+                                  Length(min=2, max=2)],
+                      render_kw={"placeholder": "State"})
+  zip = StringField(validators=[InputRequired(),
+                                Length(min=5, max=5)],
+                    render_kw={"placeholder": "Zipcode"})
+  email = EmailField(validators=[InputRequired(),
+                                 Length(min=3, max=30)],
+                     render_kw={"placeholder": "Email Address"})
+  phone = StringField(validators=[InputRequired(),
+                                  Length(min=10, max=10)],
+                      render_kw={"placeholder": "Phone Number"})
+  id_type = SelectField('ID Type',
+                        choices=[('P', 'Passport'), ('S', 'Social Security'),
+                                 ('D', "Driver's License")])
+  id_no = StringField(validators=[InputRequired(),
+                                  Length(min=3, max=10)],
+                      render_kw={"placeholder": "ID Number"})
   submit = SubmitField("Register")
 
   def validate_username(self, username):
@@ -79,6 +117,7 @@ class RegisterForm(FlaskForm):
       raise ValidationError("That username already exists.")
 
 
+# Form for login page
 class LoginForm(FlaskForm):
 
   username = StringField(validators=[InputRequired(),
@@ -100,7 +139,7 @@ def login():
 
   # Incase already logged in user navigates to login page
   if current_user.is_authenticated:
-    return redirect(url_for('home'))
+    return redirect(url_for('home.dash'))
 
   form = LoginForm()
   if form.validate_on_submit():
@@ -117,7 +156,8 @@ def login():
 
     user = User(user_data[0], user_data[1], user_data[3])
     login_user(user)
-    return redirect(url_for('home'))
+    db.close()
+    return redirect(url_for('home.dash'))
 
   return render_template('login.html', form=form)
 
@@ -125,7 +165,7 @@ def login():
 @app.route('/logout')
 def logout():
   logout_user()
-  return redirect(url_for('login'))
+  return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -133,23 +173,39 @@ def register():
   form = RegisterForm()
 
   if form.validate_on_submit():
+    # Insert new web user to db
     user = form.username.data
     hash_pass = bcrypt.generate_password_hash(form.password.data)
-    if form.checkbox.data:
-      emp = 'E'
-    else:
-      emp = 'C'
+    emp = 'C'
     sql = "insert into web_user (usrname, password, type) values (:u, :p, :e)"
     cur.execute(sql, u=user, p=hash_pass, e=emp)
+
+    # Insert new associated customer to db
+    sql = "select user_id from web_user where usrname=:u"
+    cur.execute(sql, u=user)
+    user_id = cur.fetchone()[0]
+    user_data = [
+        form.fname.data, form.mname.data, form.lname.data, form.street.data,
+        form.city.data, form.state.data, form.zip.data, form.email.data,
+        form.phone.data, form.id_type.data, form.id_no.data, user_id
+    ]
+    sql = "insert into customer (cust_fname,cust_mname,cust_lname,cust_street,cust_city,cust_state,cust_zip,cust_email,cust_phone,id_type,id_number,user_id) values (:a,:b,:c,:d,:e,:f,:g,:h,:i,:j,:k,:l)"
+    cur.execute(sql,
+                a=user_data[0],
+                b=user_data[1],
+                c=user_data[2],
+                d=user_data[3],
+                e=user_data[4],
+                f=user_data[5],
+                g=user_data[6],
+                h=user_data[7],
+                i=user_data[8],
+                j=user_data[9],
+                k=user_data[10],
+                l=user_data[11])
     return redirect(url_for('login'))
 
   return render_template('register.html', form=form)
-
-
-@app.route('/home', methods=['GET', 'POST'])
-@login_required
-def home():
-  return render_template('home.html')
 
 
 if __name__ == '__main__':

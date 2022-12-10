@@ -68,7 +68,7 @@ CREATE UNIQUE INDEX book_rental__idx ON
 ALTER TABLE book_rental ADD CONSTRAINT book_rental_pk PRIMARY KEY ( rental_id );
 
 CREATE TABLE customer (
-    cust_id     NUMBER(9) NOT NULL,
+    cust_id     NUMBER(9) GENERATED ALWAYS AS IDENTITY,
     cust_fname  VARCHAR2(30) NOT NULL,
     cust_mname  VARCHAR2(30),
     cust_lname  VARCHAR2(30) NOT NULL,
@@ -79,7 +79,8 @@ CREATE TABLE customer (
     cust_email  VARCHAR2(30) NOT NULL,
     cust_phone  VARCHAR2(10) NOT NULL,
     id_type     VARCHAR2(14) NOT NULL,
-    id_number   NUMBER(9) NOT NULL
+    id_number   VARCHAR2(10) NOT NULL,
+    user_id     NUMBER(9)
 );
 
 ALTER TABLE customer ADD CONSTRAINT customer_pk PRIMARY KEY ( cust_id );
@@ -236,6 +237,10 @@ ALTER TABLE book_rental
 ALTER TABLE book_rental
     ADD CONSTRAINT book_rental_rental_invoice_fk FOREIGN KEY ( invoice_id )
         REFERENCES rental_invoice ( invoice_id );
+
+ALTER TABLE customer
+    ADD CONSTRAINT customer_web_user_fk FOREIGN KEY ( user_id )
+        REFERENCES web_user ( user_id );
 
 ALTER TABLE exhib_expense
     ADD CONSTRAINT exhib_expense_exhibition_fk FOREIGN KEY ( event_id )
@@ -719,21 +724,21 @@ SELECT * FROM dual;
 
 
 INSERT ALL
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(1,'Jack','Peter','Street A','City A','A',07302,'234@345.com',12456789,'P',123467)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(2,'Alex','Eason','Street B','City B','B',07513,'983@481.com',12996789,'P',0813794)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(3,'Mona','k','Street c','City c','c',09202,'ko3@345.com',09712739,'S',1297197)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(4,'Jack','Edison','Street d','City d','d',07912,'972@345.com',1818129,'D',0912478)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(5,'Frank','Dick','Street E','City E','E',91745,'90D@345.com',189127889,'P',1917237)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(6,'Jack','Peter','Street F','City F','F',07102,'JK3SN4@345.com',12812379,'S',9812767)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(7,'AAA','TTT','Street A','City A','A',09162,'9ASHDUB@345.com',29812389,'P',1612367)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(8,'Aaron','Peter','Street A','City A','A',07395,'koansd@345.com',19356789,'P',162365)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(9,'LLL','Eason','Street E','City A','A',05302,'2AJSKDUI4@345.com',1236789,'P',1212367)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(10,'LLL','Eason','Street E','City A','A',05302,'2AJSKDUI4@345.com',1236789,'P',1212367)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(11,'xxx','Pdfger','Street R','City A','T',03302,'KJASDI@345.com',1256789,'S',9123467)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(12,'xxx','Piwqor','Street R','City R','A',03342,'OIUAHYR@345.com',12523469,'D',9123467)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(13,'Jkas','sadsar','Street R','City F','B',91302,'OIUAYF@345.com',129182379,'P',9192467)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(14,'qjklaj','Peter','Street R','City A','C',60402,'OAKIHI@345.com',1252349629,'D',9123843)
-INTO CUSTOMER(Cust_ID,Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES(15,'asdnqwur','psiojd','Street R','City A','A',94202,'KJFEADI@345.com',12234789,'D',9894267)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Jack','Peter','Street A','City A','A',07302,'234@345.com',12456789,'P',123467)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Alex','Eason','Street B','City B','B',07513,'983@481.com',12996789,'P',0813794)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Mona','k','Street c','City c','c',09202,'ko3@345.com',09712739,'S',1297197)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Jack','Edison','Street d','City d','d',07912,'972@345.com',1818129,'D',0912478)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Frank','Dick','Street E','City E','E',91745,'90D@345.com',189127889,'P',1917237)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Jack','Peter','Street F','City F','F',07102,'JK3SN4@345.com',12812379,'S',9812767)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('AAA','TTT','Street A','City A','A',09162,'9ASHDUB@345.com',29812389,'P',1612367)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Aaron','Peter','Street A','City A','A',07395,'koansd@345.com',19356789,'P',162365)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('LLL','Eason','Street E','City A','A',05302,'2AJSKDUI4@345.com',1236789,'P',1212367)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('LLL','Eason','Street E','City A','A',05302,'2AJSKDUI4@345.com',1236789,'P',1212367)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('xxx','Pdfger','Street R','City A','T',03302,'KJASDI@345.com',1256789,'S',9123467)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('xxx','Piwqor','Street R','City R','A',03342,'OIUAHYR@345.com',12523469,'D',9123467)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('Jkas','sadsar','Street R','City F','B',91302,'OIUAYF@345.com',129182379,'P',9192467)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('qjklaj','Peter','Street R','City A','C',60402,'OAKIHI@345.com',1252349629,'D',9123843)
+INTO CUSTOMER(Cust_FName,Cust_LName,Cust_Street,Cust_City,Cust_State,Cust_ZIP,Cust_Email,Cust_Phone,ID_Type,ID_Number) VALUES('asdnqwur','psiojd','Street R','City A','A',94202,'KJFEADI@345.com',12234789,'D',9894267)
 
 SELECT * FROM dual;
 

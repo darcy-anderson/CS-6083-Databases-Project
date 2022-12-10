@@ -1,4 +1,12 @@
-.splash img {
-  max-width: 60%;
-  max-height: 80%;
+.div_form {
+  display: inline-block;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.card-img-top {
+  height: 10vw;
+}
+
+.navbar-brand {
+  font-size: xx-large;
 }

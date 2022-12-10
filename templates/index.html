@@ -1,5 +1,10 @@
 {% extends 'base.html' %} {% block right_navbar %}
-<a href="/login" class="nav-item nav-link">Sign In</a>
+<a
+  href="/login"
+  class="font-weight-bold nav-item nav-link"
+  style="color: #88c5cc; font-size: large"
+  >Sign In</a
+>
 {% endblock %} {% block body %}
 
 <div class="row flex-grow-1">
@@ -23,7 +28,11 @@
 </div>
 
 <div class="row splash flex-grow-1 justify-content-center">
-  <img class="rounded-pill" src="/static/images/room.jpg" />
+  <img
+    class="rounded-pill"
+    src="/static/images/room.jpg"
+    style="max-width: 60%; max-height: 80%"
+  />
 </div>
 
 {% endblock %}
