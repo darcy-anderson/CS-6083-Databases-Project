@@ -1,0 +1,57 @@
+{% extends 'home/home.html' %} {% block body %}
+<link rel="stylesheet" href="/static/styles/search.css" />
+<div class="row h-50 d-flex d-column" style="color: #88c5cc">
+  <p class="h3 h-25" style="padding: 50px 0px 0px 50px; max-height: 100px">
+    Rental History
+  </p>
+  <div class="row h-75">
+    {% for rental in rentals %}
+    <div
+      class="card bg-dark border border-warning my-auto"
+      style="width: 350px; max-height: 250px; margin-left: 50px"
+    >
+      <div class="card-body">
+        <h5 class="card-title text-center">Rental ID: {{ rental[0] }}</h5>
+        <p class="card-text text-left">
+          Title: {{ rental[4] }}<br />
+          Borrow Date: {{ rental[2] }} <br />
+          Expected Return Date: {{ rental[3] }} <br />
+          Status: {{ rental[1] }} <br />
+          Return Date: {{ rental[5] }} <br />
+          Invoice ID: {{ rental[6] }} <br />
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="row h-50 d-flex d-column" style="color: #88c5cc">
+  <p
+    class="h3 h-25"
+    style="color: #88c5cc; padding: 50px 0px 0px 50px; max-height: 100px"
+  >
+    Invoices
+  </p>
+  <div class="row h-75">
+    {% for invoice in invoices %}
+    <div
+      class="card bg-dark border border-warning my-auto"
+      style="width: 300px; max-height: 350px; margin-left: 50px"
+    >
+      <div class="card-body">
+        <h5 class="card-title text-center">Invoice ID: {{ invoice[0] }}</h5>
+        <p class="card-text text-left">
+          Date: {{ invoice[1] }}<br />
+          Amount: {{ invoice[3] }} <br />
+          Status: {{ invoice[2] }} <br />
+        </p>
+        <p class="card-text text-center">
+          <button class="btn btn-warning">Make Payment</button>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

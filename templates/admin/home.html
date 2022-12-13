@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block right_navbar %}
+<a href="/home" class="nav-item nav-link text-warning" style="font-size: large"
+  >{{ current_user.get_username() }}</a
+>
+<a
+  href="/logout"
+  class="nav-item nav-link"
+  style="color: #88c5cc; font-size: large"
+  >Log Out</a
+>
+{% endblock %} {% block body %} {% endblock %}

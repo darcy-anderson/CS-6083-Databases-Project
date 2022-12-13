@@ -1,0 +1,68 @@
+{% extends 'admin/dash.html' %} {% block adminbody %}
+
+<div class="row" style="margin-left: 30px; max-height: 100px; color: #88c5cc">
+  <div class="table-title">
+    <div class="row">
+      <div class="col" style="margin-top: 30px">
+        <h5>Submit return:</h5>
+      </div>
+    </div>
+  </div>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }} <br />
+    <div class="div_form">{{ form.rental_id(class_="input_field") }}</div>
+    <div class="div_form">{{ form.submit(class_="input_field") }}</div>
+  </form>
+</div>
+
+<div class="container" style="color: #88c5cc; margin-top: 30px">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row" style="overflow-x: hidden">
+          <div class="col">
+            <h4>Rental Information</h4>
+          </div>
+        </div>
+      </div>
+      <table class="table" style="color: #ffffff">
+        <thead>
+          <tr>
+            <th>Rental ID</th>
+            <th>Rental Status</th>
+            <th>Borrow Date</th>
+            <th>Exp Return Date</th>
+            <th>Return Date</th>
+            <th>Invoice ID</th>
+            <th>Copy ID</th>
+            <th>Title</th>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rental in rentals %}
+          <tr>
+            <td>{{ rental[0] }}</td>
+            <td>{{ rental[1] }}</td>
+            <td>{{ rental[2] }}</td>
+            <td>{{ rental[3] }}</td>
+            <td>{{ rental[4] }}</td>
+            <td>{{ rental[6] }}</td>
+            <td>{{ rental[5] }}</td>
+            <td>{{ rental[8] }}</td>
+            <td>{{ rental[7] }}</td>
+            <td>{{ rental[9] }}</td>
+            <td>{{ rental[10] }}</td>
+            <td>{{ rental[11] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'home/home.html' %} {% block body %}
+<link rel="stylesheet" href="/static/styles/search.css" />
+<div class="row">
+  <p
+    class="h3"
+    style="color: #88c5cc; padding: 50px 0px 0px 50px; max-height: 100px"
+  >
+    Study Room Reservations
+  </p>
+</div>
+
+<div class="row flex-fill d-flex d-column h-100">
+  <div class="row d-flex flex-column" style="color: #88c5cc; height: 255px">
+    <div class="row h-25">
+      <p class="h5" style="padding: 30px 0px 0px 50px">
+        Your Existing Reservations:
+      </p>
+    </div>
+
+    <div class="row flex-fill">
+      {% for booking in bookings %}
+      <div
+        class="card bg-dark border border-warning my-auto"
+        style="max-width: 225px; max-height: 150px; margin-left: 50px"
+      >
+        <div class="card-body">
+          <h5 class="card-title text-center">{{ booking[0] }}</h5>
+          <p class="card-text text-center">
+            Study Room {{ booking[2] }} <br />
+            Space for {{ booking[3] }} people. <br />
+            Timeslot: {{ booking[1] }} <br />
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="row d-flex flex-column flex-fill" style="color: #88c5cc">
+    <div class="row" style="padding-left: 65px">
+      <hr />
+      <p class="h5" style="padding: 10px 0px 30px 0px">Make New Reservation:</p>
+    </div>
+    <form method="POST" class="input-group" style="padding-left: 50px">
+      {{ form2.hidden_tag() }} <br />
+      <div class="div_form">{{ form2.date2 }}</div>
+      <div class="div_form">{{ form2.timeslot2 }}</div>
+      <div class="div_form">{{ form2.room(class_="input_field") }}</div>
+      <div class="div_form">{{ form2.reserve }}</div>
+    </form>
+  </div>
+
+  <div class="row h-75 flex-fill">
+    <div class="grid search">
+      <div class="grid-body">
+        <div class="row">
+          <hr />
+
+          <p class="h5" style="padding: 0px 0px 20px 0px">
+            Check Availability:
+          </p>
+
+          <form method="POST" class="input-group">
+            {{ form.hidden_tag() }} <br />
+            <div class="div_form">{{ form.date }}</div>
+            <div class="div_form">{{ form.timeslot }}</div>
+            <div class="div_form">
+              <span class="input-group-btn">
+                <button
+                  type="submit"
+                  name="submit"
+                  value="x"
+                  class="btn btn-primary"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+
+          <div class="padding"></div>
+          <br />
+
+          <div class="table-responsive">
+            <table class="table table-dark">
+              <tbody>
+                {% for room in available %}
+                <tr>
+                  <td class="product">
+                    <strong>Study Room {{ room[0] }} </strong><br />Space for {{
+                    room[1] }} people.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'admin/home.html' %} {% block body %}
+
+<div class="row">
+  <p
+    class="h3"
+    style="color: #88c5cc; padding: 50px 0px 0px 50px; max-height: 100px"
+  >
+    Admin Dashboard
+  </p>
+</div>
+
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-dark"
+  style="margin-left: 30px"
+>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/books">Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/authors">Author Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/customers">Customer Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/rentals">Rentals</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/study">Study Rooms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/admin/events">Events</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="row flex-fill">{% block adminbody %}{% endblock %}</div>
+
+{% endblock %}

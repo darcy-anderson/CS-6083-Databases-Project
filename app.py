@@ -1,3 +1,5 @@
+# Base flask app, handles login/registration
+
 from flask import Flask, render_template, url_for, redirect, flash
 import oracledb
 from flask_login import login_user, LoginManager, logout_user, current_user
@@ -7,10 +9,12 @@ from wtforms import StringField, PasswordField, SubmitField, EmailField, SelectF
 from wtforms.validators import InputRequired, Length, ValidationError
 
 from home import home
+from admin import admin
 
 # Configure flask
 app = Flask(__name__)
 app.register_blueprint(home)
+app.register_blueprint(admin)
 app.secret_key = '43d23d8ceafbba0828658a49072098379701a5635b9d0b7abe1478f07921c2c2'
 
 # Establish connection to database server
@@ -53,6 +57,9 @@ class User():
 
   def get_username(self):
     return self.username
+
+  def get_type(self):
+    return self.type
 
 
 # User loader for flask_login, called every time new page is visited
@@ -131,6 +138,10 @@ class LoginForm(FlaskForm):
 
 @app.route('/')
 def index():
+
+  if current_user.is_authenticated:
+    return redirect(url_for('home.dash'))
+
   return render_template('index.html')
 
 
@@ -156,8 +167,10 @@ def login():
 
     user = User(user_data[0], user_data[1], user_data[3])
     login_user(user)
-    db.close()
-    return redirect(url_for('home.dash'))
+    if user_data[3] == 'E':
+      return redirect(url_for('admin.dash'))
+    else:
+      return redirect(url_for('home.dash'))
 
   return render_template('login.html', form=form)
 
@@ -170,6 +183,10 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+  if current_user.is_authenticated:
+    return redirect(url_for('home.dash'))
+
   form = RegisterForm()
 
   if form.validate_on_submit():

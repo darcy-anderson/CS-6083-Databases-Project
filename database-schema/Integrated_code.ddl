@@ -460,7 +460,7 @@ BEGIN
     IF (:NEW.Return_Date IS NOT NULL) THEN
       IF (:NEW.Return_Date <= :OLD.Exp_Return_Date) THEN
         INSERT INTO RENTAL_INVOICE(Invoice_Date, Invoice_Status, Invoice_Amount)
-     VALUES (:NEW.Return_Date, 'O', ((:NEW.Return_Date-:OLD.Borrow_Date)*0.2));
+        VALUES (:NEW.Return_Date, 'O', ((:NEW.Return_Date-:OLD.Borrow_Date)*0.2));
       ELSE
         INSERT INTO RENTAL_INVOICE(Invoice_Date, Invoice_Status, Invoice_Amount)
         VALUES (
@@ -470,10 +470,12 @@ BEGIN
           ((:NEW.Return_Date - :OLD.Exp_Return_Date) * 0.4))
         );
       END IF;
+      UPDATE BOOK_COPY SET Copy_Status = 'A' WHERE Copy_ID = :OLD.Copy_ID;
     END IF;
   END IF;
 END;
 /
+
 
 
 --insert data
@@ -496,10 +498,9 @@ SELECT * FROM dual;
 
 
 
-
 INSERT ALL
 INTO AUTHOR(Author_ID, Author_FName, Author_LName) VALUES (1, 'Jon', 'Krakauer')
-INTO AUTHOR(Author_ID, Author_FName, Author_MName, Author_LName) VALUES (2, 'Carlos', 'Ruiz', 'Zaf贸n')
+INTO AUTHOR(Author_ID, Author_FName, Author_MName, Author_LName) VALUES (2, 'Carlos', 'Ruiz', 'Zafón')
 INTO AUTHOR(Author_ID, Author_FName, Author_LName, Author_Street, Author_City, Author_State, Author_ZIP) VALUES (3, 'Stephen', 'King', '47 W Broadway', 'Bangor', 'ME', 04401)
 INTO AUTHOR(Author_ID, Author_FName, Author_LName) VALUES (4, 'Margaret', 'Atwood')
 INTO AUTHOR(Author_ID, Author_FName, Author_LName) VALUES (5, 'Frank', 'Herbert')
@@ -514,38 +515,37 @@ SELECT * FROM dual;
 
 
 
+
 INSERT ALL
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (1,3)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (2,1)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (3,3)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (3,9)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (3,2)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (4,8)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (5,7)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (5,1)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (6,4)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (7,2)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (8,3)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (9,12)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (9,11)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (10,7)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (11,8)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (12,4)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (12,1)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (13,5)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (13,7)
-INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (13,9)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (1,1)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (2,2)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (3,4)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (4,3)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (5,5)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (6,6)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (7,6)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (8,7)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (8,8)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (8,9)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (9,6)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (10,10)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (11,10)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (12,11)
+INTO BOOK_AUTHOR(Book_ID, Author_ID) VALUES (13,12)
 SELECT * FROM dual;
+
+
+
 
 INSERT ALL
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(1,'A',1)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(2,'N',1)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(3,'A',2)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(4,'N',2)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(3,'N',2)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(4,'A',2)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(5,'N',2)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(6,'N',3)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(7,'A',4)
-INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(8,'N',5)
+INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(8,'A',5)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(9,'N',6)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(10,'N',6)
 INTO BOOK_COPY(Copy_ID,Copy_Status,Book_ID) VALUES(11,'A',6)

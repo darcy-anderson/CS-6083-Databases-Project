@@ -1,0 +1,70 @@
+{% extends 'admin/dash.html' %} {% block adminbody %}
+
+<div class="row" style="margin-left: 30px; max-height: 100px; color: #88c5cc">
+  <div class="table-title">
+    <div class="row">
+      <div class="col" style="margin-top: 30px">
+        <h5>Enter new author or modify existing author:</h5>
+      </div>
+    </div>
+  </div>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }} <br />
+    <div class="div_form">{{ form.id(class_="input_field") }}</div>
+    <div class="div_form">{{ form.fname(class_="input_field") }}</div>
+    <div class="div_form">{{ form.mname(class_="input_field") }}</div>
+    <div class="div_form">{{ form.lname(class_="input_field") }}</div>
+    <div class="div_form">{{ form.street(class_="input_field") }}</div>
+    <div class="div_form">{{ form.city(class_="input_field") }}</div>
+    <div class="div_form">{{ form.state(class_="input_field") }}</div>
+    <div class="div_form">{{ form.zip(class_="input_field") }}</div>
+    <div class="div_form">{{ form.email(class_="input_field") }}</div>
+    <div class="div_form">{{ form.submit(class_="input_field") }}</div>
+  </form>
+</div>
+
+<div class="container" style="color: #88c5cc; margin-top: 30px">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row" style="overflow-x: hidden">
+          <div class="col">
+            <h4>Author Information</h4>
+          </div>
+        </div>
+      </div>
+      <table class="table" style="color: #ffffff">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for author in authors %}
+          <tr>
+            <td>{{ author[0] }}</td>
+            <td>{{ author[1] }}</td>
+            <td>{{ author[2] }}</td>
+            <td>{{ author[3] }}</td>
+            <td>{{ author[4] }}</td>
+            <td>{{ author[5] }}</td>
+            <td>{{ author[6] }}</td>
+            <td>{{ author[7] }}</td>
+            <td>{{ author[8] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

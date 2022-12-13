@@ -1,0 +1,60 @@
+{% extends 'admin/dash.html' %} {% block adminbody %}
+
+<div class="row" style="margin-left: 30px; max-height: 100px; color: #88c5cc">
+  <div class="table-title">
+    <div class="row">
+      <div class="col" style="margin-top: 30px">
+        <h5>Delete existing reservation:</h5>
+      </div>
+    </div>
+  </div>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }} <br />
+    <div class="div_form">{{ form.date(class_="input_field") }}</div>
+    <div class="div_form">{{ form.timeslot(class_="input_field") }}</div>
+    <div class="div_form">{{ form.room_id(class_="input_field") }}</div>
+    <div class="div_form">{{ form.submit(class_="input_field") }}</div>
+  </form>
+</div>
+
+<div class="container" style="color: #88c5cc; margin-top: 30px">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row" style="overflow-x: hidden">
+          <div class="col">
+            <h4>Author Information</h4>
+          </div>
+        </div>
+      </div>
+      <table class="table" style="color: #ffffff">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Timeslot</th>
+            <th>Room ID</th>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td>{{ booking[0] }}</td>
+            <td>{{ booking[1] }}</td>
+            <td>{{ booking[2] }}</td>
+            <td>{{ booking[3] }}</td>
+            <td>{{ booking[4] }}</td>
+            <td>{{ booking[5] }}</td>
+            <td>{{ booking[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
